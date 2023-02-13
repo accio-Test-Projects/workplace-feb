@@ -61,3 +61,27 @@ export const expectedSalary=[
   '30-35 LPA',
   '35+ LPA',
 ]
+export const industryType=[
+  'IT',
+  'Banking',
+  'Finance',
+  'Insurance',
+  'Healthcare',
+  'Education',
+  'Ecommerce',
+  'Media',
+  'Entertainment',
+  'Travel',
+  'Food',
+]
+
+export const companySize=[
+  '1-10',
+  '10-50',
+  '50-100',
+  '100-500',
+  '500-1000',
+  '1000-5000',
+  '5000+',
+
+]

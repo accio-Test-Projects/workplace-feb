@@ -1,5 +1,5 @@
 import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./onboarding.css";
 import {
   primaryRole,
@@ -9,10 +9,17 @@ import {
 } from "../../../constants";
 import SearchableDropDown from "../../common/SearchableDropDown";
 import UploadFile from "../../common/UploadFile";
+import { userContext } from "../../../context/userContext";
+import { db } from "../../../firebaseconfig";
+import { doc, setDoc } from "firebase/firestore";
+import toastMessage from "../../../utils/toastMessage";
+import { useNavigate } from "react-router-dom";
 function Onboarding() {
+  const [state, dispatch] = useContext(userContext);
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    name: "",
-    email: "",
+    name: state.user.displayName,
+    email: state.user.email,
     phone: "",
     primaryRole: "",
     linkedin: "",
@@ -34,16 +41,37 @@ function Onboarding() {
       setUserData({ ...userData, skills: [...userData.skills, skill] });
     }
   };
-  const submitData = (e) => {
+  const submitData = async (e) => {
     e.preventDefault();
     console.log(userData);
-  }
+
+    // push data to firebase to collection userInfo
+    const userId = state.user.email;
+
+    // setDoc(doc ref, data)
+    // doc(db ref, collection name, doc id)
+    try {
+      await setDoc(doc(db, "userInfo", userId), {
+        ...userData,
+        userId,
+        userType: "candidate",
+      });
+      toastMessage("data saved successfully", "success");
+      // redirect to profile page
+      navigate("/candidate/profile");
+    } catch (err) {
+      console.log(err);
+      toastMessage("something went wrong", "error");
+    }
+  };
   return (
-    <form onSubmit={submitData} >
+    <form onSubmit={submitData}>
       <div>
         <Button>Logout</Button>
       </div>
-      <Grid className="grid-container" container spacing={2}>
+      <Grid className="grid-container" container  spacing={2}
+    
+      >
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>Name</label>
           <TextField
@@ -63,6 +91,7 @@ function Onboarding() {
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>Email</label>
           <TextField
+            disabled
             size="small"
             type={"email"}
             fullWidth
@@ -198,7 +227,11 @@ function Onboarding() {
         </Grid>
         <Grid className="grid-item" item xs={12}>
           <label>Resume</label>
-          <UploadFile />
+          <UploadFile
+            type="doc"
+            onUpload={(url) => setUserData({ ...userData, resume: url })}
+            value={userData.resume}
+          />
         </Grid>
         <Grid
           sx={{
@@ -209,7 +242,7 @@ function Onboarding() {
           item
           xs={12}
         >
-          <Button type="sumbit" >Complete Setup</Button>
+          <Button type="sumbit">Complete Setup</Button>
         </Grid>
       </Grid>
     </form>

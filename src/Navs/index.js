@@ -18,6 +18,7 @@ function Navs() {
   const [state,dipatch]=useContext(userContext)
   const CandidateProtected = () => {
     const isAuth=state.isAuth
+    // isAuth is a boolean value
     if (isAuth) {
       return <Outlet/>
     }
@@ -28,6 +29,7 @@ function Navs() {
 
   const EmployerProtected = () => {
     const isAuth=state.isAuth
+  
     if (isAuth) {
       return <Outlet/>
     }

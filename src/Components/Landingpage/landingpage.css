@@ -89,5 +89,5 @@ color: #000000;
   border-radius: 50%;
   object-fit: cover; */
 }
-/* clamp(mix font px ,ratio , max font ) */
+/* clamp(min font px ,ratio , max font px ) */
 /* ratio ( (max font/design width)X100 vw ) */

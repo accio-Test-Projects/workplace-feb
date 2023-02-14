@@ -2,10 +2,9 @@ import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebaseconfig";
-function UploadFile({ type = "doc", onUpload, value }) {
+function UploadFile({ type = "doc", onUpload, value, disabled }) {
   const [progress, setProgress] = useState(0);
   const upload = (e) => {
-
     const file = e.target.files[0];
     console.log(file);
     setProgress(2);
@@ -34,21 +33,66 @@ function UploadFile({ type = "doc", onUpload, value }) {
   return progress > 0 ? (
     <h2>{progress}</h2>
   ) : (
-    <TextField
-      size="small"
-      type={"file"}
-      inputProps={{
-        accept: type === "doc" ? ".doc,.docx,.pdf" : ".jpg,.jpeg,.png",
-      }}
-      onChange={(e) => upload(e)}
-      fullWidth
-      sx={{
-        fieldset: {
-          borderRadius: "10px",
-          border: "1px solid #00000036",
-        },
-      }}
-    />
+    <div>
+      <TextField
+      
+        size="small"
+        type={"file"}
+        inputProps={{
+          accept: type === "doc" ? ".doc,.docx,.pdf" : ".jpg,.jpeg,.png",
+        }}
+        onChange={(e) => upload(e)}
+        fullWidth
+        sx={{
+          display: disabled ? "none" : "block",
+          fieldset: {
+            borderRadius: "10px",
+            border: "1px solid #00000036",
+          },
+        }}
+      />
+      <div>
+        {value ? (
+          <div>
+            {type === "doc" ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: "20px",
+                }}
+              >
+                <a href={value} target="_blank" rel="noreferrer">
+                  <img
+                    width={"50px"}
+                    src="https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg"
+                    alt="pdf"
+                  />
+                </a>
+              </div>
+            ) : (
+              <h3 
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+              }}
+              >
+                <img
+                  width={"100px"}
+                src={value}
+                alt="img"
+                />
+              </h3>
+            )}
+          </div>
+        ) : (
+          <h2>please upload a doc</h2>
+        )}
+      </div>
+    </div>
   );
 }
 

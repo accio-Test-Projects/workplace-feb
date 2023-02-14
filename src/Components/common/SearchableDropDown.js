@@ -2,9 +2,10 @@ import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-function SearchableDropDown({ options, onChange }) {
+function SearchableDropDown({ options, onChange,disabled }) {
   return (
     <Autocomplete
+    disabled={disabled}
       disablePortal
       size="small"
       onChange={(event, newValue) => {

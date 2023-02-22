@@ -1,10 +1,7 @@
 import { Button, Grid, MenuItem, Select, TextField } from "@mui/material";
 import React, { useContext, useState } from "react";
 import "./onboarding.css";
-import {
-  companySize,
-  industryType
-} from "../../../constants";
+import { companySize, industryType } from "../../../constants";
 import SearchableDropDown from "../../common/SearchableDropDown";
 import UploadFile from "../../common/UploadFile";
 import { userContext } from "../../../context/userContext";
@@ -27,7 +24,6 @@ function Onboarding() {
     companyBio: "",
     industryType: "",
     companyLogo: "",
-    
   });
   const setSkills = (skill) => {
     //if skill is already present in the array then remove it
@@ -38,7 +34,10 @@ function Onboarding() {
         skills: companyData.skills.filter((item) => item !== skill),
       });
     } else {
-      setcompanyData({ ...companyData, skills: [...companyData.skills, skill] });
+      setcompanyData({
+        ...companyData,
+        skills: [...companyData.skills, skill],
+      });
     }
   };
   const submitData = async (e) => {
@@ -59,6 +58,10 @@ function Onboarding() {
       });
       toastMessage("data saved successfully", "success");
       // redirect to profile page
+      dispatch({
+        type: "AddUSERINFO",
+        payload: { ...companyData, userId, userType: "employer" },
+      });
       navigate("/employer/profile");
     } catch (err) {
       console.log(err);
@@ -70,9 +73,7 @@ function Onboarding() {
       <div>
         <Button>Logout</Button>
       </div>
-      <Grid className="grid-container" container  spacing={2}
-    
-      >
+      <Grid className="grid-container" container spacing={2}>
         <Grid className="grid-item" item xs={12} sm={6}>
           <label> Company Name</label>
           <TextField
@@ -86,7 +87,9 @@ function Onboarding() {
                 border: "1px solid #00000036",
               },
             }}
-            onChange={(e) => setcompanyData({ ...companyData, companyName: e.target.value })}
+            onChange={(e) =>
+              setcompanyData({ ...companyData, companyName: e.target.value })
+            }
           />
         </Grid>
         <Grid className="grid-item" item xs={12} sm={6}>
@@ -184,9 +187,7 @@ function Onboarding() {
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>Role</label>
           <TextField
-            
             size="small"
-          
             fullWidth
             required
             value={companyData.role}
@@ -201,7 +202,7 @@ function Onboarding() {
             }
           />
         </Grid>
-        
+
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>Company Website </label>
           <TextField
@@ -220,7 +221,7 @@ function Onboarding() {
             }
           />
         </Grid>
-     
+
         <Grid className="grid-item" item xs={12} sm={6}>
           <label>linkedin </label>
           <TextField
@@ -243,7 +244,6 @@ function Onboarding() {
           <label>comapny tag</label>
           <TextField
             size="small"
-           
             fullWidth
             required
             value={companyData.companyTag}
@@ -253,7 +253,9 @@ function Onboarding() {
                 border: "1px solid #00000036",
               },
             }}
-            onChange={(e) => setcompanyData({ ...companyData, companyTag: e.target.value })}
+            onChange={(e) =>
+              setcompanyData({ ...companyData, companyTag: e.target.value })
+            }
           />
         </Grid>
         <Grid className="grid-item" item xs={12}>
@@ -271,14 +273,18 @@ function Onboarding() {
                 border: "1px solid #00000036",
               },
             }}
-            onChange={(e) => setcompanyData({ ...companyData, companyBio: e.target.value })}
+            onChange={(e) =>
+              setcompanyData({ ...companyData, companyBio: e.target.value })
+            }
           />
         </Grid>
         <Grid className="grid-item" item xs={12}>
           <label>Company logo</label>
           <UploadFile
             type="image"
-            onUpload={(url) => setcompanyData({ ...companyData, companyLogo: url })}
+            onUpload={(url) =>
+              setcompanyData({ ...companyData, companyLogo: url })
+            }
             value={companyData.companyLogo}
           />
         </Grid>
@@ -299,4 +305,3 @@ function Onboarding() {
 }
 
 export default Onboarding;
-

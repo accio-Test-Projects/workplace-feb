@@ -85,3 +85,12 @@ export const companySize=[
   '5000+',
 
 ]
+export const jobType=[
+  'Full-time',
+  'Part-time',
+  'InternShip',
+  'Contract'
+]
+export const currency=[
+  '$',
+]

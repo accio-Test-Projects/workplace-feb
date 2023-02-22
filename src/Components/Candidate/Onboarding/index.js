@@ -58,6 +58,14 @@ function Onboarding() {
       });
       toastMessage("data saved successfully", "success");
       // redirect to profile page
+      dispatch({
+        type:'AddUSERINFO',
+        payload:{
+          ...userData,
+          userId,
+          userType: "candidate",
+        }
+      })
       navigate("/candidate/profile");
     } catch (err) {
       console.log(err);

@@ -7,39 +7,40 @@ import { useContext } from "react";
 import { userContext } from "../../context/userContext";
 import "./auth.css";
 import { useNavigate } from "react-router-dom";
-import {auth} from '../../firebaseconfig'
+import {auth, db} from '../../firebaseconfig'
+import { doc, getDoc } from "firebase/firestore";
 function Auth({ type }) {
   const navigate = useNavigate();
 
   const [state, dispatch] = useContext(userContext);
 
-  const redirectUser = () => {
+  const redirectUser = async(email) => {
+    //call firestore userInfo collection and see if doc id=== user eamil exists or not
+    const docref=doc(db,'userInfo',email)
+    const userData=await getDoc(docref)
+    let userInformation=null
+    if(userData.exists()){
+      userInformation=userData.data()
+    }
     if (
       // user exists
-      false
+      userInformation
     ) {
       if (
         // user exist as candidate but trying to login as employer
-        false
+        userInformation.userType===type
       ) {
-        //alert user he exist as candidate
-      } else if (
-        // user exist as employer but trying to login as candidate
-        false
-      ) {
-        //alert user he exist as employer
-      } else if (
-        // user exist as candidate and trying to login as candidate
-        true
-      ) {
+        dispatch({
+          type:'AddUSERINFO',
+          payload:userData.data()
+        })
         // redirect to candidate profile
-        navigate("/candidate/profile");
-      } else if (
-        // user exist as employer and trying to login as employer
-        true
-      ) {
-        // redirect to employer profile
-        navigate("/employer/profile");
+        navigate(`/${type}/profile`);
+      
+      
+      }
+      else{
+        alert(`this ID exist as ${userInformation.userType} but you are tring to signIn as ${type}`)
       }
     } else {
       // user doesn't exist
@@ -70,7 +71,7 @@ function Auth({ type }) {
             uid,
           }
         })
-        redirectUser();
+        redirectUser(email);
 
       })
       .catch((error) => {

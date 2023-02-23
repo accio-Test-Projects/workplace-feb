@@ -27,12 +27,12 @@ function Auth({ type }) {
       userInformation
     ) {
       if (
-        // user exist as candidate but trying to login as employer
+        // user exist as candidate but trying to login as employer or vice versa
         userInformation.userType===type
       ) {
         dispatch({
           type:'AddUSERINFO',
-          payload:userData.data()
+          payload:userInformation
         })
         // redirect to candidate profile
         navigate(`/${type}/profile`);
@@ -42,7 +42,8 @@ function Auth({ type }) {
       else{
         alert(`this ID exist as ${userInformation.userType} but you are tring to signIn as ${type}`)
       }
-    } else {
+    }
+     else {
       // user doesn't exist
       if (type === "candidate") {
         // redirect to candidate onboarding

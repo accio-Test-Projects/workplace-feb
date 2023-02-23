@@ -44,16 +44,24 @@ function CommonTable({ columns, data,btnAction }) {
                 }
                 else if(column.type === "action"){
                   return (
-                    <div style={column.style} key={index}>
+                   
+                    <div
+                  
+                    style={column.style} key={index}>
                       <button
                       className="shortlist-btn"
+                      disabled={item.status === "accepted" || item.status === "rejected"}
                       onClick={()=>btnAction(item,'shortlist')}
+                      style={{ opacity: item.status === "accepted" || item.status === "rejected" ? 0.5 : 1,}}
                       >Shortlist</button>
                       <button
+                        style={{ opacity: item.status === "accepted" || item.status === "rejected" ? 0.5 : 1,}}
+                      disabled={item.status === "accepted" || item.status === "rejected"}
                       onClick={()=>btnAction(item,'reject')}
                       className="reject-btn"
                       >Reject</button>
                     </div>
+                   
                   );
                 }
                 else{

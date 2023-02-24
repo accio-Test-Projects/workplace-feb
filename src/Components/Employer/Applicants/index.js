@@ -131,7 +131,8 @@ function Applicants() {
           createdAt: new Date(),
           message,
           conversationKey,
-          lastMessageId
+          lastMessageId,
+          jobTitle: data.jobTitle,
         });
 
         // 3. create a doc in conversation collection with the conversation key
